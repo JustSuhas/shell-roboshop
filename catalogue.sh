@@ -15,7 +15,7 @@ SCRIPT_DIR=$PWD
 
 mkdir -p $Logs_Folder
 
-echo "Script started execution at $(date)" | tee - a &>>$Log_File
+echo "Script started execution at $(date)" | tee -a &>>$Log_File
 
 
 if [ $USERID -ne 0 ]; then
@@ -38,7 +38,7 @@ validate $? "Disabling NodeJS"
 dnf module enable nodejs:20 -y &>>$Log_File
 validate $? "Enabling NodeJS"
 
-dnf install nodejs -y $>>$Log_File
+dnf install nodejs -y &>>$Log_File
 validate $? "Installing NodeJS"
 
 id roboshop
@@ -52,7 +52,7 @@ fi
 mkdir -p /app
 validate $? "Creating app directory"
 
-curl -o "/tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip"
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
 validate $? "Downloading catalogue application"
 
 cd /app
@@ -87,7 +87,7 @@ validate $? "MongoDB Client Installation"
 
 #To prevent duplication of loading of products
 INDEX=$(mongosh mongodb.pracdevops.store --quiet --eval "db.getMongo().getDBNames().indexOf('Catalogue')")
-if [ $INDEX -le 0]; then
+if [ $INDEX -le 0 ]; then
     mongosh --host $mongodb_host </app/db/master-data.js $>>$Log_File
     validate $? "Loading catalogue products"
 else
