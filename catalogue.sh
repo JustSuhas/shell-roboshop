@@ -18,7 +18,7 @@ mkdir -p $Logs_Folder
 echo "Script started execution at $(date)" | tee - a &>>$Log_File
 
 
-if [ USERID -ne 0 ]; then
+if [ $USERID -ne 0 ]; then
     echo -e "$R Error...$N Run this script with root privelege"
     exit 1
 fi
